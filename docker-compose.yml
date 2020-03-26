@@ -1,0 +1,22 @@
+version: "3.1"
+services:
+  sbbg:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        HOME_DIR: $USER_HOME_DIR
+        VERSION: 1
+        MODULE_NAME: $MODULE_NAME
+        APP_NAME: $APP_NAME
+        LOG_DIR_NAME: $LOG_DIR_NAME
+    volumes:
+      - .:/$USER_HOME_DIR/$MODULE_NAME
+    working_dir: /$USER_HOME_DIR/$MODULE_NAME/cmd/$APP_NAME
+    command: gin -i -t /$USER_HOME_DIR/$MODULE_NAME -d /$USER_HOME_DIR/$MODULE_NAME/cmd/$APP_NAME -p 9600 -a 8089 run main.go
+    ports:
+      - "8089:9600"
+    environment:
+      PORT: 8089
+      SERVER_PORT: $SERVER_PORT
+      SERVER_CORS_ALLOWED_ORIGINS: $SERVER_CORS_ALLOWED_ORIGINS      
